@@ -1,0 +1,38 @@
+[
+  {
+    "key" : "Vitória",
+    "name" : "Vitória",
+    "latitude" : -20.2833,
+    "longitude" : -37.0677
+  },
+  {
+    "key" : "Viana",
+    "name" : "Viana",
+    "latitude" : -20.3921,
+    "longitude" : -40.5014
+  },
+  {
+    "key" : "Colatina",
+    "name" : "Colatina",
+    "latitude" : -19.4722,
+    "longitude" : -40.6258
+  },
+  {
+    "key" : "Marilândia",
+    "name" : "Marilândia",
+    "latitude" : -19.4279,
+    "longitude" : -40.5076
+  },
+  {
+    "key" : "Aracruz",
+    "name" : "Aracruz",
+    "latitude" : -19.7827,
+    "longitude" : -40.1327
+  },  
+  {
+    "key" : "ES",
+    "name" : "Espírito Santo",
+    "latitude" : -20.3155,
+    "longitude" : -40.3128
+  }
+]

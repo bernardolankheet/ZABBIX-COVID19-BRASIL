@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2020-05-08T20:12:17Z</date>
+    <groups>
+        <group>
+            <name>CORONAVIRUS</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template_Module_HTTP_LLD_BRASIL_CIDADES_P-ESTADO_Corona</template>
+            <name>Template_Module_HTTP_LLD_BRASIL_CIDADES_P-ESTADO_Corona</name>
+            <description>Necessário alterar a macro do Estado, consultar o estado na url:&#13;
+&#13;
+https://brasil.io/api/dataset/covid19/caso/data/?format=json&amp;is_last=True&#13;
+&#13;
+Consultar o a chave state.</description>
+            <groups>
+                <group>
+                    <name>CORONAVIRUS</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>COVID19-ES</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>HTTPJSON</name>
+                    <type>HTTP_AGENT</type>
+                    <key>discovery.http.all.es</key>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>COVID19-ES</name>
+                        </application>
+                    </applications>
+                    <url>https://brasil.io/api/dataset/covid19/caso/data/?format=json&amp;is_last=True&amp;state={$ESTADO}</url>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Discovery Cidades</name>
+                    <type>DEPENDENT</type>
+                    <key>discovery.http.all_es</key>
+                    <delay>0</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>&quot;{#CIDADE}&quot; - Casos</name>
+                            <type>DEPENDENT</type>
+                            <key>cases.estado[{#CIDADE}]</key>
+                            <delay>0</delay>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>&quot;{#CIDADE}&quot; - Casos</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.city =='{#CIDADE}')].confirmed</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>discovery.http.all.es</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#CIDADE}&quot; - Óbitos</name>
+                            <type>DEPENDENT</type>
+                            <key>obitos.estado[{#CIDADE}]</key>
+                            <delay>0</delay>
+                            <value_type>FLOAT</value_type>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>&quot;{#CIDADE}&quot; - Casos</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.city =='{#CIDADE}')].deaths</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>discovery.http.all.es</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#CIDADE}&quot; - Taxa de Óbitos</name>
+                            <type>DEPENDENT</type>
+                            <key>obitos.taxa.estado[{#CIDADE}]</key>
+                            <delay>0</delay>
+                            <value_type>FLOAT</value_type>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>&quot;{#CIDADE}&quot; - Casos</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.city =='{#CIDADE}')].death_rate</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>discovery.http.all.es</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#CIDADE}&quot; - Polupacao Estimada</name>
+                            <type>DEPENDENT</type>
+                            <key>populacao.estado[{#CIDADE}]</key>
+                            <delay>0</delay>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>&quot;{#CIDADE}&quot; - Casos</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.city =='{#CIDADE}')].estimated_population_2019</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>discovery.http.all.es</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <master_item>
+                        <key>discovery.http.all.es</key>
+                    </master_item>
+                    <lld_macro_paths>
+                        <lld_macro_path>
+                            <lld_macro>{#CIDADE}</lld_macro>
+                            <path>$.city</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#ESTADO}</lld_macro>
+                            <path>$.state</path>
+                        </lld_macro_path>
+                    </lld_macro_paths>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.results</params>
+                        </step>
+                    </preprocessing>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$ESTADO}</macro>
+                    <value>ES</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>

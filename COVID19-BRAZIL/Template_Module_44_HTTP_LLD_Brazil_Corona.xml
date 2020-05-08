@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2020-03-22T00:44:50Z</date>
+    <groups>
+        <group>
+            <name>Templates/Linetwork</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template_Module_HTTP_LLD_Brazil_Corona</template>
+            <name>Template_Module_HTTP_LLD_Brazil_Corona</name>
+            <groups>
+                <group>
+                    <name>Templates/Linetwork</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Total Cases</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>HTTP Consulta  Brasil Total</name>
+                    <type>HTTP_AGENT</type>
+                    <key>http.consult</key>
+                    <delay>2h</delay>
+                    <history>1d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Total Cases</name>
+                        </application>
+                    </applications>
+                    <timeout>10s</timeout>
+                    <url>https://covid19-brazil-api.now.sh/api/report/v1</url>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Discovery Todos Estados</name>
+                    <type>DEPENDENT</type>
+                    <key>discovery.http.all3</key>
+                    <delay>0</delay>
+                    <lifetime>1h</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>&quot;{#UF}&quot; - Casos</name>
+                            <type>DEPENDENT</type>
+                            <key>cases.estado[{#UF}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Casos &quot;{#UF}&quot;</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.uf =='{#UF}')].cases</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>http.consult</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#UF}&quot; - Ultima Atualizacao Official</name>
+                            <type>DEPENDENT</type>
+                            <key>datetime.estado[{#UF}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Casos &quot;{#UF}&quot;</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.uf =='{#UF}')].datetime</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[&quot;([^\\].*)\&quot;]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>http.consult</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#UF}&quot; - Mortes</name>
+                            <type>DEPENDENT</type>
+                            <key>deaths.estado[{#UF}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Casos &quot;{#UF}&quot;</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.uf =='{#UF}')].deaths</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>http.consult</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#UF}&quot; - Negativos</name>
+                            <type>DEPENDENT</type>
+                            <key>refuses.estado[{#UF}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Casos &quot;{#UF}&quot;</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.uf =='{#UF}')].refuses</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>http.consult</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>&quot;{#UF}&quot; - Suspeitos</name>
+                            <type>DEPENDENT</type>
+                            <key>suspects.estado[{#UF}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Casos &quot;{#UF}&quot;</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <params>$..[?(@.uf =='{#UF}')].suspects</params>
+                                </step>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>\[([^\\].*)\]
+\1</params>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>http.consult</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <master_item>
+                        <key>http.consult</key>
+                    </master_item>
+                    <lld_macro_paths>
+                        <lld_macro_path>
+                            <lld_macro>{#ESTADO}</lld_macro>
+                            <path>$.state</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#UF}</lld_macro>
+                            <path>$.uf</path>
+                        </lld_macro_path>
+                    </lld_macro_paths>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>

@@ -30,14 +30,4 @@ Obs: Caso em paises não apareça a lista, verifique se as aplicações e itens 
 
 ![Image description](covid19-brasil.png)
 
-# ZBX-GRA-COVID19-CIDADES-POR-ESTADO
-Template_Module_HTTP_LLD_Brazil_Corona
-
-Necessário alterar a macro do Estado, consultar o estado na url:
-
-https://brasil.io/api/dataset/covid19/caso/data/?format=json&is_last=True
-
-Consultar o a chave state.
-
-Obs: Não Terminado, disponibilizado para continuação do projeto.
 
